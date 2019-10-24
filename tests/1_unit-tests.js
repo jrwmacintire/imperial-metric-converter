@@ -43,7 +43,7 @@ suite('Unit Tests', function(){
     
     test('Invalid Input (double fraction)', function(done) {
       const input = '9/1/3gal';
-      assert.deepEqual(convertHandler.getNum(input), 'Invalid number in input.');
+      assert.deepEqual(convertHandler.getNum(input), 'Invalid number.');
       done();
     });
     
@@ -75,7 +75,7 @@ suite('Unit Tests', function(){
     
     test('Unknown Unit Input', function(done) {
       const unknownUnit = '23hands';
-      assert.equal(convertHandler.getUnit(unknownUnit), 'invalid unit')
+      assert.equal(convertHandler.getUnit(unknownUnit), 'Invalid unit.')
       done();
     });  
     

@@ -42,7 +42,7 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           // console.log('\t\tres: ', res);
           assert.equal(res.status, 500);
-          assert.equal(res.body, 'Invalid unit in input.');
+          assert.equal(res.body, 'Invalid unit.');
           done();
         });
       });
@@ -52,9 +52,9 @@ suite('Functional Tests', function() {
         .get('/api/convert')
         .query({input: '3/7.2/4kg'})
         .end(function(err, res){
-          console.log('\t\tres.body: ', res.body);
+          // console.log('res.body: ', res.body);
           assert.equal(res.status, 500);
-          assert.equal(res.body, 'Invalid number in input.');
+          assert.equal(res.body, 'Invalid number.');
           done();
         });
       });  
@@ -66,7 +66,7 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           // console.log('\t\tres.body: ', res.body);
           assert.equal(res.status, 500);
-          assert.equal(res.body, 'Invalid number in input.');
+          assert.equal(res.body, 'Invalid number.');
           done();
         });
       });
@@ -76,7 +76,7 @@ suite('Functional Tests', function() {
         .get('/api/convert')
         .query({input: 'kg'})
         .end(function(err, res){
-          console.log('\t\tres.body: ', res.body);
+          // console.log('res.body: ', res.body);
           assert.equal(res.status, 200);
           assert.equal(res.body.initNum, 1);
           assert.equal(res.body.initUnit, 'kg');

@@ -24,12 +24,12 @@ module.exports = function (app) {
               initNum    = convertHandler.getNum(input),   // returns input's number converted to Number, or 'invalid number'
               initUnit   = convertHandler.getUnit(input);  // returns input's unit as a string, or 'invalid unit' 
 
-        if(initNum === 'invalid number' && initUnit === 'invalid unit') {
+        if(initNum === 'Invalid number.' && initUnit === 'Invalid unit.') {
           res.status(500).json('Invalid number and unit in input.');
-        } else if(initNum === 'invalid number') {
-          res.status(500).json('Invalid number in input.');
-        } else if(initUnit === 'invalid unit') {
-          res.status(500).json('Invalid unit in input.')
+        } else if(initNum === 'Invalid number.') {
+          res.status(500).json('Invalid number.');
+        } else if(initUnit === 'Invalid unit.') {
+          res.status(500).json('Invalid unit.')
         } else {
           const returnNum  = convertHandler.convert(initNum, initUnit),
                 returnUnit = convertHandler.getReturnUnit(initUnit.toLowerCase()),

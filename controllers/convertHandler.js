@@ -17,15 +17,17 @@ function ConvertHandler() {
 
     const regex = /^([0-9]*[.]?[0-9]*)[\/]?([0-9]*[.]?[0-9]*[.]?[0-9]*)$/gm;
     const matches = regex.exec(num);
+
+    if(matches === null) return 'Invalid number.';
     const num1 = Number(matches[1]),
           num2 = Number(matches[2]);
-    const validNumber = this.validateNumber(num),
-                float = this.convertToFloat(num1, num2);
+    const validNumber = this.validateNumber(num);
 
     if(validNumber) {
+      const float = this.convertToFloat(num1, num2);
       if(num === '') return 1;
       if(float !== false) return float;
-      if(float === false) return 'invalid number';
+      if(float === false) return 'Invalid number.';
     } else {
       throw Error('Error occured trying to get a number from the input.');
     }
@@ -37,13 +39,14 @@ function ConvertHandler() {
     // TODO: Add validation for 'unit'
     const validUnit = this.validateUnit(unit);
     if(validUnit) return unit;
-    else return 'invalid unit';
+    else return 'Invalid unit.';
   };
 
   this.splitInputUnitAndNumber = function(input) {
     try {
       const splitInputRegex = /^([0-9./]*)([a-zA-Z]+)$/gm;
       const matches = splitInputRegex.exec(input);
+      const [ all, number, unit ] = matches;
       // For input w/o number, containing only text
       if(matches[1] === '' && matches[2] !== '') {
         return {
@@ -52,8 +55,8 @@ function ConvertHandler() {
         };
       } else if(matches[1] === '' && matches[2] === '') {
         return {
-          num: 'invalid number',
-          unit: 'invalid unit'
+          num: 'Invalid number.',
+          unit: 'Invalid unit.'
         };
       } else {
         return {
@@ -78,7 +81,7 @@ function ConvertHandler() {
   };
 
   this.validateNumber = function(num) {
-    const regex = /^([0-9]*[.]?[0-9]*)[\/]?([0-9]*[.]?[0-9]*[.]?[0-9]*)$/gm;
+    const regex = /^([0-9]*[.]?[0-9]*[\/]?)([0-9]*[.]?[0-9]*[.]?[0-9]*)$/gm;
     const result = regex.test(num);
     if(result) return true;
     else return false;
@@ -123,7 +126,7 @@ function ConvertHandler() {
         return 'kilograms';
       default:
         console.log('Failed to match and spell out unit.');
-        return 'invalid unit';
+        return 'Invalid unit';
     }
   };
   
@@ -148,7 +151,7 @@ function ConvertHandler() {
           return (initNum / lbsToKg);
         default:
           // console.log('Failed to match a unit for conversion.');
-          return 'invalid unit';
+          return 'Invalid unit';
       }
     };
     
