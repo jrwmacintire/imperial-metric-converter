@@ -46,6 +46,12 @@ function ConvertHandler() {
     try {
       const splitInputRegex = /^([0-9./]*)([a-zA-Z]+)$/gm;
       const matches = splitInputRegex.exec(input);
+      if(!matches) {
+        return {
+          num: 'Invalid number.',
+          unit: 'Invalid unit.'
+        };
+      }
       const [ all, number, unit ] = matches;
       // For input w/o number, containing only text
       if(matches[1] === '' && matches[2] !== '') {

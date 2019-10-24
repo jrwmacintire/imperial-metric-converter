@@ -25,11 +25,11 @@ module.exports = function (app) {
               initUnit   = convertHandler.getUnit(input);  // returns input's unit as a string, or 'invalid unit' 
 
         if(initNum === 'Invalid number.' && initUnit === 'Invalid unit.') {
-          res.status(500).json('Invalid number and unit in input.');
+          res.json('Invalid number and unit in input.');
         } else if(initNum === 'Invalid number.') {
-          res.status(500).json('Invalid number.');
+          res.json('Invalid number.');
         } else if(initUnit === 'Invalid unit.') {
-          res.status(500).json('Invalid unit.')
+          res.json('Invalid unit.')
         } else {
           const returnNum  = convertHandler.convert(initNum, initUnit),
                 returnUnit = convertHandler.getReturnUnit(initUnit.toLowerCase()),

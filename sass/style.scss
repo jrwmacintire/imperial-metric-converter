@@ -1,3 +1,77 @@
-body{
-    color: darkturquoise;
+body {
+    font-size: 16px;
+
+    div.container {
+        display: flex;
+        flex-direction: column;
+        margin: 3rem auto;
+
+        hr {
+            border: 0.5px paleturquoise solid;
+            width: 60%;
+            margin: 2rem auto;
+        }
+
+        section > div.row > div.col {
+            margin: auto;
+        }
+
+        code {
+            color: mediumturquoise;
+        }
+
+        section#header {
+            
+            hr {
+                width: 100%;
+                border: 1px paleturquoise solid;
+                margin: 1.5rem 0 2rem;
+            }
+
+            @media (max-width: 466px) {
+                h1 {
+                    font-size: 2rem;
+                }
+            }
+
+            @media (max-width: 993px) {
+                h1 {
+                    font-size: 2.3rem;
+                }
+            }
+        }
+    
+        section#userstories {
+            
+            div.col:last-child > h3 {
+                margin-top: 1rem;
+            }
+
+            code {
+                font-size: 1.1rem;
+            }
+        }
+    
+        section#ui {
+            
+            form#convertForm {
+                display: flex;
+                border: none;
+                margin: 1rem 0;
+            }
+
+            code#jsonResult {
+                font-size: 1.4rem;
+            }
+        }
+    
+        section#footer {
+            text-align: center;
+            margin: 2rem 0;
+
+            a {
+                color: turquoise;
+            }
+        }
+    }
 }
