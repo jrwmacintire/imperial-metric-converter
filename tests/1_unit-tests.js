@@ -43,7 +43,7 @@ suite('Unit Tests', function(){
     
     test('Invalid Input (double fraction)', function(done) {
       const input = '9/1/3gal';
-      assert.deepEqual(convertHandler.getNum(input), 'invalid number');
+      assert.deepEqual(convertHandler.getNum(input), 'Invalid number in input.');
       done();
     });
     
@@ -111,7 +111,7 @@ suite('Unit Tests', function(){
     
     test('Gal to L', function(done) {
       var input = [5, 'gal'];
-      var expected = 18.9271;
+      var expected = 18.92705;
       assert.approximately(convertHandler.convert(input[0],input[1]),expected,0.1); //0.1 tolerance
       done();
     });

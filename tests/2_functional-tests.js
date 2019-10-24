@@ -40,11 +40,9 @@ suite('Functional Tests', function() {
         .get('/api/convert')
         .query({input: '32g'})
         .end(function(err, res){
-          // console.log('\t\tres.body: ', res);
+          // console.log('\t\tres: ', res);
           assert.equal(res.status, 500);
-          assert.equal(res.body.initNum, 32);
-          // assert.equal(res.body.initUnit, 'invalid unit');
-          assert.equal(res.body.returnUnit, 'invalid unit');
+          assert.equal(res.body, 'Invalid unit in input.');
           done();
         });
       });
@@ -54,23 +52,39 @@ suite('Functional Tests', function() {
         .get('/api/convert')
         .query({input: '3/7.2/4kg'})
         .end(function(err, res){
-          // console.log('\t\tres.body: ', res.body);
-          // assert.equal(res.status, 200);
-          // assert.equal(res.body.initNum, '3/7.2/4');
-          // assert.equal(res.body.initUnit, 'kg');
-          // assert.equal(res.body.returnNumber, 'invalid number');
-          // done();
+          console.log('\t\tres.body: ', res.body);
+          assert.equal(res.status, 500);
+          assert.equal(res.body, 'Invalid number in input.');
+          done();
         });
       });  
       
       test('Convert 3/7.2/4kilomegagram (invalid number and unit)', function(done) {
-        
-        // done();
+        chai.request(server)
+        .get('/api/convert')
+        .query({input: '3/7.2/4kg'})
+        .end(function(err, res){
+          // console.log('\t\tres.body: ', res.body);
+          assert.equal(res.status, 500);
+          assert.equal(res.body, 'Invalid number in input.');
+          done();
+        });
       });
       
       test('Convert kg (no number)', function(done) {
-        
-        // done();
+        chai.request(server)
+        .get('/api/convert')
+        .query({input: 'kg'})
+        .end(function(err, res){
+          console.log('\t\tres.body: ', res.body);
+          assert.equal(res.status, 200);
+          assert.equal(res.body.initNum, 1);
+          assert.equal(res.body.initUnit, 'kg');
+          assert.equal(res.body.returnNum, 2.20462);
+          assert.equal(res.body.returnUnit, 'lbs');
+          assert.equal(res.body.getString, '1 kilograms converts to 2.20462 pounds');
+          done();
+        });
       });
       
     });

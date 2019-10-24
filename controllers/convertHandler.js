@@ -11,19 +11,88 @@ const processInput = require('../lib/processInput');
 function ConvertHandler() {
   
   this.getNum = function(input) {
-    // console.log('\t~ this.getNum triggered ~', 'input: ' + input);
-    const num = processInput(input).num;
-    console.log(`\tnum: ${num}`);
-    if(num) return num;
-    else return 'invalid number';
+    const { num, unit } = this.splitInputUnitAndNumber(input);
+    // TODO: Add validation to 'num'
+    // find the two pieces
+
+    const regex = /^([0-9]*[.]?[0-9]*)[\/]?([0-9]*[.]?[0-9]*[.]?[0-9]*)$/gm;
+    const matches = regex.exec(num);
+    const num1 = Number(matches[1]),
+          num2 = Number(matches[2]);
+    const validNumber = this.validateNumber(num),
+                float = this.convertToFloat(num1, num2);
+
+    if(validNumber) {
+      if(num === '') return 1;
+      if(float !== false) return float;
+      if(float === false) return 'invalid number';
+    } else {
+      throw Error('Error occured trying to get a number from the input.');
+    }
+
   };
   
   this.getUnit = function(input) {
-    // console.log('\t~ this.getUnit triggered ~', 'input: ' + input);
-    const unit = processInput(input).unit;
-    console.log(`unit: ${unit}`);
-    return unit;
+    const unit = this.splitInputUnitAndNumber(input).unit;
+    // TODO: Add validation for 'unit'
+    const validUnit = this.validateUnit(unit);
+    if(validUnit) return unit;
+    else return 'invalid unit';
   };
+
+  this.splitInputUnitAndNumber = function(input) {
+    try {
+      const splitInputRegex = /^([0-9./]*)([a-zA-Z]+)$/gm;
+      const matches = splitInputRegex.exec(input);
+      // For input w/o number, containing only text
+      if(matches[1] === '' && matches[2] !== '') {
+        return {
+          num: 1,
+          unit: matches[2]
+        };
+      } else if(matches[1] === '' && matches[2] === '') {
+        return {
+          num: 'invalid number',
+          unit: 'invalid unit'
+        };
+      } else {
+        return {
+          num: matches[1],
+          unit: matches[2]
+        };
+      }
+    } catch(err) {
+      throw err;
+    }
+  };
+
+  this.convertToFloat = function(num1, num2) {
+    if(num1 !== 0 && num2 === 0) {
+      return parseFloat(num1);
+    } else if(num1 !== 0 && num2 !== 0) {
+      const dividend = num1 / num2;
+      return Number(dividend.toFixed(5));
+    } else {
+      return false;
+    }
+  };
+
+  this.validateNumber = function(num) {
+    const regex = /^([0-9]*[.]?[0-9]*)[\/]?([0-9]*[.]?[0-9]*[.]?[0-9]*)$/gm;
+    const result = regex.test(num);
+    if(result) return true;
+    else return false;
+  };
+
+  this.validateUnit = function(unit) {
+    const inputs = ['gal','l','mi','km','lbs','kg'];
+    let valid = false;
+    inputs.forEach(input => {
+      if(input === unit.toLowerCase()) valid = true;
+    });
+    // console.log(`Validating unit - unit is ${valid}`);
+    return valid;
+  }
   
   this.getReturnUnit = function(initUnit) {
     
@@ -37,12 +106,9 @@ function ConvertHandler() {
   };
 
   this.spellOutUnit = function(unit) {
-    var result;
     // console.log(`this.spellOutUnit - unit: ${unit}`);
     
-    const units = ['gal','l','mi','km','lbs','kg'];
-    
-    switch(unit) {
+    switch(unit.toLowerCase()) {
       case 'gal':
         return 'gallons';
       case 'l':
@@ -59,8 +125,6 @@ function ConvertHandler() {
         console.log('Failed to match and spell out unit.');
         return 'invalid unit';
     }
-    
-    return result;
   };
   
   this.convert = function(initNum, initUnit) {
@@ -68,8 +132,8 @@ function ConvertHandler() {
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
     
-    function conversion() {
-      switch(initUnit.toLowerCase()) {
+    function conversion(unit) {
+      switch(unit.toLowerCase()) {
         case 'gal':
           return (initNum * galToL);
         case 'l':
@@ -83,14 +147,13 @@ function ConvertHandler() {
         case 'kg':
           return (initNum / lbsToKg);
         default:
-          console.log('Failed to match a unit for conversion.');
+          // console.log('Failed to match a unit for conversion.');
           return 'invalid unit';
       }
     };
     
-    const result = Number(conversion().toFixed(5));
+    const result = parseFloat(conversion(initUnit).toFixed(5));
     // console.log(`result: ${result}`);
-    
     return result;
     
   };
